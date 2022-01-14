@@ -26,21 +26,34 @@ class UserImplement implements UserInterface{
         $this->model->create($user);
     }
 
+     /**
+     * muestra los user en formato paginacion
+     */
     function getUsers(){
         
         return $this->model->withTrashed()->paginate(10);
     }
- 
+    
+    /**
+     * muestra un user en especifico
+     */
     function getUser(int $id){
-
+        
+        return $this->model->find($id);
     }
 
+    /**
+     * Actualiza los datos de un user
+     */
     function updateUser(array $user, int $id){
         
         $user['password'] = Hash::make($user['password']);
         $this->model->where('id', $id)->first()->fill($user)->save();
     }
 
+    /**
+     * Inabilitia un user en especifico
+     */
     function deleteUser(int $id){
 
         $user = $this->model->find($id);
@@ -50,6 +63,9 @@ class UserImplement implements UserInterface{
         }
     }
 
+    /**
+     * abilita un user en especifico
+     */
     function restoreUser(int $id){
 
         $user = $this->model->withTrashed()->find($id);

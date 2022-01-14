@@ -53,10 +53,25 @@ class UserController extends Controller
         return response($this->userService->getUsers(), 200);
     }
 
+    public function showUser(int $id){
+
+        return response($this->userService->getUser($id), 200);
+    }
+
     public function upUser(int $id){
 
-        $this->userService->updateUser($this->request->all(), $id);
-        
+        $validator = $this->validator->validate();
+
+        if($validator->fails()){
+            return response([
+                'status' => 422,
+                'message' => 'Error',
+                'erros' => $validator->errors()
+            ], 422);
+        }else {
+            $this->userService->updateUser($this->request->all(), $id);
+        }
+              
         return response('User Actilizado Exitosamente', 202);
     }
 

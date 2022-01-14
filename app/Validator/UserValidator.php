@@ -26,7 +26,7 @@ class UserValidator{
 
         return [
 
-            'username' => 'required|unique:user,username',
+            'username' => 'required|unique:user,username,' .$this->request->id,
             'email' => 'required|email|unique:user,email,' .$this->request->id,
             'password' => 'required|min:4',
             'confirm_password' => 'required|same:password'

@@ -19,10 +19,18 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => '/api' ], function () use ($router){
 
-    $router->group(['prefix' => '/user' ], function () use ($router){
+    $router->group(['prefix' => '/auth'], function () use ($router){
 
         $router->post('/register', 'UserController@postUser');
+    });
+
+    /**
+     * Estas rutas estan protegidas
+     */
+    $router->group(['prefix' => '/user', 'middleware' => 'auth' ], function () use ($router){
+      
         $router->get('/list', 'UserController@showUsers');
+        $router->get('/{id}', 'UserController@showUser');
         $router->put('/update/{id}', 'UserController@upUser');
         $router->delete('/disable/{id}', 'UserController@disableUser');
         $router->get('/enable/{id}', 'UserController@enableUSer');
