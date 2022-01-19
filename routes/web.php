@@ -17,11 +17,24 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+/**
+ * Ruta general de la Api
+ */
 $router->group(['prefix' => '/api' ], function () use ($router){
 
+    /**
+     * Rutas para Autenticarse
+     */
     $router->group(['prefix' => '/auth'], function () use ($router){
 
         $router->post('/register', 'UserController@postUser');
+        $router->post('/login', 'AuthController@login');
+
+        $router->group(['middleware' => 'auth'], function () use ($router){
+
+            $router->post('/logout', 'UserController@logout');
+            $router->post('/refresh', 'AuthController@refresh');
+        });
     });
 
     /**

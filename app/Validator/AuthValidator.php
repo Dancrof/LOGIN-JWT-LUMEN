@@ -5,7 +5,7 @@ namespace App\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class UserValidator{
+class AuthValidator{
 
     /**
      * @var Request
@@ -26,11 +26,8 @@ class UserValidator{
 
         return [
 
-            'name' => 'required',
-            'username' => 'required|unique:user,username,' .$this->request->id,
-            'email' => 'required|email|unique:user,email,' .$this->request->id,
-            'password' => 'required|min:4',
-            'confirm_password' => 'required|same:password'
+            'email' => 'required|email',
+            'password' => 'required|min:4'
         ];
     }
 
