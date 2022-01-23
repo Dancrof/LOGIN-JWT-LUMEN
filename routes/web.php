@@ -38,14 +38,28 @@ $router->group(['prefix' => '/api' ], function () use ($router){
     });
 
     /**
-     * Estas rutas estan protegidas
+     * Estas rutas estan protegidas para user
      */
     $router->group(['prefix' => '/user', 'middleware' => 'auth' ], function () use ($router){
       
         $router->get('/list', 'UserController@showUsers');
-        $router->get('/{id}', 'UserController@showUser');
+        $router->post('/profile', 'AuthController@profile');
         $router->put('/update/{id}', 'UserController@upUser');
         $router->delete('/disable/{id}', 'UserController@disableUser');
         $router->get('/enable/{id}', 'UserController@enableUSer');
+    });
+
+    /**
+     * Estas rutas estan protegidas para admin
+     */
+    $router->group(['prefix' => '/admin', 'middleware' => 'auth' ], function () use ($router){
+        
+        $router->group(['prefix' => '/gender'], function () use ($router){
+
+            $router->post('/create', 'GenderController@postGender');
+            $router->get('/list', 'GenderController@showGenders');
+            $router->get('/{id}', 'GenderController@showGender');
+            $router->delete('/delete/{id}', 'GenderController@clearGender'); 
+        });
     });
 });

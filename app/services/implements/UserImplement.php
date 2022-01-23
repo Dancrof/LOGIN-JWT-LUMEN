@@ -4,17 +4,24 @@ namespace App\Services\Implements;
 
 use App\Models\User;
 use App\Services\Interfaces\UserInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-use function PHPUnit\Framework\isNull;
-
 class UserImplement implements UserInterface{
-
+    /**
+     * @var User
+     */
     private $model;
+
+    /**
+     * @var Request
+     */
+    private $request;
     
     function __construct()
     {
         $this->model = new User();
+        $this->request = new Request();
     }
 
     /**
@@ -31,7 +38,13 @@ class UserImplement implements UserInterface{
      */
     function getUsers(){
         
-        return $this->model->withTrashed()->paginate(10);
+        if($this->request->has('search')){
+            return $this->model->query()->where('username', '=', $this->request->get('search'))
+                        ->orWhere('email', 'like', '%' .$this->request->get('search') .'%')->get();
+        } else {
+            
+            return $this->model->withTrashed()->paginate(10);
+        }
     }
     
     /**

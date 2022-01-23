@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Validator\AuthValidator;
 use Illuminate\Support\Facades\Auth;
@@ -10,25 +9,14 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 
-    /** 
-     * @var User  
-     */
-    private $model;
-    /** 
-     * @var Request  
-     */
-    private $request;
-
     /**
      * @var AuthValidator
      */
     private $validator;
 
-    public function __construct(AuthValidator $authValidator, Request $request, User $userModel)
+    public function __construct(AuthValidator $authValidator)
     {
         $this->validator = $authValidator;
-        $this->request = $request;
-        $this->model = $userModel;
 
         $this->middleware('auth', ['except' => ['login', 'refresh', 'logout']]);
     }
@@ -89,8 +77,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function refresh()
-    {
-        return $this->respondWithToken(auth()->refresh());
+    {                             
+        return $this->respondWithToken(auth()->refresh());      // este error es del inteligente  de laravel, no afecta en nada.
     }
 
     /**
@@ -102,8 +90,6 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        $this->model->setRememberToken($token);
-
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
