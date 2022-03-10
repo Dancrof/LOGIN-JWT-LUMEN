@@ -54,12 +54,6 @@ $router->group(['prefix' => '/api' ], function () use ($router){
      */
     $router->group(['prefix' => '/admin', 'middleware' => 'auth' ], function () use ($router){
         
-        $router->group(['prefix' => '/gender'], function () use ($router){
-
-            $router->post('/create', 'GenderController@postGender');
-            $router->get('/list', 'GenderController@showGenders');
-            $router->get('/{id}', 'GenderController@showGender');
-            $router->delete('/delete/{id}', 'GenderController@clearGender'); 
-        });
+        
     });
 });
